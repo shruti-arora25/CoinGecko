@@ -5,4 +5,9 @@ import dagger.hilt.android.HiltAndroidApp
 
 
 @HiltAndroidApp
-class CoinGecoApp:Application()
+class CoinGecoApp:Application(){
+
+    override fun onCreate() {
+        super.onCreate()
+    }
+}

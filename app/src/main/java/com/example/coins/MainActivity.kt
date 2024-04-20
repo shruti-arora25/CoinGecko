@@ -84,7 +84,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
                     } else {
                         bind.progressBar.visibility = View.GONE
                         tempCoinList.addAll(coinListValue.coinsList)
-                        coinAdapter.setData(tempCoinList as ArrayList<Coin>)
+                        coinAdapter.setData(tempCoinList)
 
                     }
 

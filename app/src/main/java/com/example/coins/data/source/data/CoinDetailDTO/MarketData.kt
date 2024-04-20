@@ -68,8 +68,8 @@ data class MarketData(
     var priceChangePercentage200dInCurrency: PriceChangePercentage14dInCurrency,
     @SerializedName("price_change_percentage_24h")
     var priceChangePercentage24h: Double,
-    @SerializedName("price_change_percentage_24h_in_currency")
-    var priceChangePercentage24hInCurrency: PriceChangePercentage24hInCurrency,
+    //@SerializedName("price_change_percentage_24h_in_currency")
+   // var priceChangePercentage24hInCurrency: PriceChangePercentage24hInCurrency,
     @SerializedName("price_change_percentage_30d")
     var priceChangePercentage30d: Double,
     @SerializedName("price_change_percentage_30d_in_currency")
