@@ -2,15 +2,20 @@ package com.example.coins.presentation.coinList
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.coins.di.CoinGeckoModule.getCoinListUseCase
 import com.example.coins.domain.use_cases.CoinListUseCase
 import com.example.coins.util.ResponseState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class coinLiistVM @Inject constructor(private val coinsUseCase: CoinListUseCase):ViewModel() {
+/*@HiltViewModel*/
+class coinLiistVM /*@Inject constructor*/(
+    private val coinsUseCase: CoinListUseCase = getCoinListUseCase
+):ViewModel() {
 
     private val coinListValue= MutableStateFlow(CoinListState())
     var _coinListValue:StateFlow<CoinListState> = coinListValue

@@ -1,28 +1,25 @@
 package com.example.coins
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.example.coins.databinding.ActivityMainBinding
 import com.example.coins.domain.model.Coin
 import com.example.coins.presentation.coinList.coinAdapter
 import com.example.coins.presentation.coinList.coinLiistVM
-import com.example.coins.presentation.coins.coinVM
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-@AndroidEntryPoint
+
+/*@AndroidEntryPoint*/
 class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
 
     private lateinit var bind: ActivityMainBinding
@@ -47,13 +44,8 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
             coinAdapter.setData(tempCoinList)
 
         }
-
         callAPI()
-
-
-
         bind.recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (LayoutManager.findLastVisibleItemPosition() == LayoutManager.itemCount - 1) {
@@ -63,11 +55,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
                     callAPI()
                 }
             }
-
-
         })
-
-
     }
 
     private fun callAPI() {
@@ -85,9 +73,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
                         bind.progressBar.visibility = View.GONE
                         tempCoinList.addAll(coinListValue.coinsList)
                         coinAdapter.setData(tempCoinList)
-
                     }
-
                 }
             }
 
@@ -109,7 +95,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu, menu)
         val search = menu?.findItem(R.id.menuSearch)
-        val searchView = search?.actionView as androidx.appcompat.widget.SearchView
+        val searchView = search?.actionView as SearchView
         searchView.isSubmitButtonEnabled = true
         searchView.setOnQueryTextListener(this)
         return true
@@ -120,13 +106,11 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
     }
 
     override fun onQueryTextChange(newText: String?): Boolean {
-     if (newText?.isEmpty()!!){
-         coinAdapter.setData(tempCoinList)
-     }
-
-        else{
+        if (newText?.isEmpty()!!) {
+            coinAdapter.setData(tempCoinList)
+        } else {
             coinAdapter.filter.filter(newText)
-     }
+        }
 
         return true
     }

@@ -4,14 +4,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.coins.domain.use_cases.CoinDetailUseCase
 import com.example.coins.util.ResponseState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
-class coinVM @Inject constructor(
+/*@HiltViewModel*/
+class coinVM /*@Inject constructor*/(
     private val coinDetailUseCase: CoinDetailUseCase
 ) : ViewModel() {
 

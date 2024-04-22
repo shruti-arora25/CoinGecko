@@ -1,5 +1,6 @@
 package com.example.coins.domain.use_cases
 
+import com.example.coins.di.CoinGeckoModule.getCoinRepo
 import com.example.coins.domain.domain_repository.CoinRepo
 import com.example.coins.domain.model.Coin
 import com.example.coins.domain.model.CoinDetail
@@ -11,7 +12,7 @@ import java.io.IOException
 import javax.inject.Inject
 
 class CoinDetailUseCase @Inject constructor(
-    private val repository: CoinRepo
+    private val repository: CoinRepo = getCoinRepo
 ) {
 
     operator fun invoke(id:String): Flow<ResponseState<CoinDetail>> = flow {
