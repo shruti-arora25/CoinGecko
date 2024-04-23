@@ -1,5 +1,6 @@
 package com.example.coins.presentation.coinList
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.coins.di.CoinGeckoModule.getCoinListUseCase
@@ -13,9 +14,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /*@HiltViewModel*/
-
-/*@Inject constructor*/
-class coinLiistVM(
+class coinLiistVM
+    (
     private val coinsUseCase: CoinListUseCase = getCoinListUseCase
 ):ViewModel() {
 
@@ -24,8 +24,16 @@ class coinLiistVM(
 
 
     fun getAllCoins(page:String)=viewModelScope.launch(Dispatchers.IO) {
+
+        Log.d("TAG-------->","o")
+
         coinsUseCase(page).collect{
+            Log.d("TAG-------->","Eo")
+
+
+
             when(it){
+
                 is ResponseState.Success -> {
                 coinListValue.value= CoinListState(coinsList = it.data?: emptyList())
                 }

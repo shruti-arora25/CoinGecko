@@ -1,6 +1,7 @@
 package com.example.coins
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.View
 import android.widget.Toast
@@ -19,6 +20,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+
 /*@AndroidEntryPoint*/
 class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
 
@@ -26,8 +28,8 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
     private lateinit var coinAdapter: coinAdapter
     private lateinit var LayoutManager: GridLayoutManager
     private var page: Int = 1
-    private val tempCoinList = arrayListOf<Coin>()
-    private val coinLiistVM:coinLiistVM by viewModels()
+    private val tempCoinList = ArrayList<Coin>()
+    private val coinLiistVM: coinLiistVM by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,22 +37,30 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         bind = ActivityMainBinding.inflate(layoutInflater)
 
         setContentView(bind.root)
+
+        Log.d("TAG1------>", "k")
+        callAPI()
+
         LayoutManager = GridLayoutManager(this, 2)
 
         setUpTheRecyclerView()
-        //LayoutManager = GridLayoutManager(this, 2)
+
+        Log.d("TAG4------>", "k")
+
 
         bind.btSort.setOnClickListener {
-            tempCoinList.sortWith { o1, o2 -> o1.name.compareTo(o2.name) }
-            coinAdapter.setData(tempCoinList)
+            tempCoinList.sortedWith() { o1, o2 -> o1.name.compareTo(o2.name) }
+            coinAdapter.setData(tempCoinList as ArrayList<Coin>)
 
         }
-        callAPI()
+
+
+
         bind.recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (LayoutManager.findLastVisibleItemPosition() == LayoutManager.itemCount - 1) {
-                    page++
+                    page += 1
                     coinLiistVM.getAllCoins(page.toString())
 
                     callAPI()
@@ -61,8 +71,12 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
 
     private fun callAPI() {
 
+
         CoroutineScope(Dispatchers.IO).launch {
+
             coinLiistVM._coinListValue.collectLatest { coinListValue ->
+
+                Log.d("TAGCoinList-------->", "Eo")
 
                 withContext(Dispatchers.Main) {
                     if (coinListValue.isLoading) {

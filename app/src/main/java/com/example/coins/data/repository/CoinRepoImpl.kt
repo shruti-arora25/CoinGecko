@@ -8,7 +8,7 @@ import com.example.coins.di.CoinGeckoModule.provideCoinGeckoApi
 import com.example.coins.domain.domain_repository.CoinRepo
 import javax.inject.Inject
 
-class CoinRepoImpl /*@Inject constructor*/(
+class CoinRepoImpl(
     private val coinApi: CoinGecoApi = provideCoinGeckoApi()
 ) : CoinRepo {
 

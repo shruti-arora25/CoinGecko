@@ -3,16 +3,13 @@ package com.example.coins.presentation.coinList
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.coins.R
 import com.example.coins.databinding.ListItemBinding
 import com.example.coins.domain.model.Coin
 import com.example.coins.presentation.coins.CoinActivity
@@ -21,7 +18,7 @@ import com.squareup.picasso.Picasso
 class coinAdapter(private val context: Context, var coinList: ArrayList<Coin>) :
     RecyclerView.Adapter<coinAdapter.CoinVH>(), Filterable {
 
-    lateinit var filteredList: ArrayList<Coin>
+    var filteredList: ArrayList<Coin> = ArrayList()
 
     private lateinit var bind: ListItemBinding
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): coinAdapter.CoinVH {
@@ -43,14 +40,21 @@ class coinAdapter(private val context: Context, var coinList: ArrayList<Coin>) :
 
     }
 
+
     fun setData(list: ArrayList<Coin>) {
-        this.filteredList = list
+//        this.filteredList = list
+//        this.coinList = list
+//
         this.coinList = list
+        this.filteredList.clear() // Clear the filtered list
+        this.filteredList.addAll(list)
         notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int {
-        return coinList.size
+        // return coinList.size
+
+        return filteredList.size
     }
 
 
@@ -86,14 +90,13 @@ class coinAdapter(private val context: Context, var coinList: ArrayList<Coin>) :
             }
 
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-              if (results?.values==null){
-                  ArrayList<Coin>()
+                if (results?.values == null) {
+                    ArrayList<Coin>()
 
-              }
-                else{
+                } else {
 
                     setData(filteredList)
-              }
+                }
 
             }
 
