@@ -2,6 +2,7 @@ package com.example.coins.presentation.coinList
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Filter
@@ -18,10 +19,14 @@ import com.squareup.picasso.Picasso
 class coinAdapter(private val context: Context, var coinList: ArrayList<Coin>) :
     RecyclerView.Adapter<coinAdapter.CoinVH>(), Filterable {
 
+
     var filteredList: ArrayList<Coin> = ArrayList()
 
     private lateinit var bind: ListItemBinding
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): coinAdapter.CoinVH {
+
+        Log.d("TAGG-------->","rfr")
+
         bind = ListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return CoinVH(bind)
     }
@@ -52,9 +57,9 @@ class coinAdapter(private val context: Context, var coinList: ArrayList<Coin>) :
     }
 
     override fun getItemCount(): Int {
-        // return coinList.size
+         return coinList.size
 
-        return filteredList.size
+     //   return filteredList.size
     }
 
 

@@ -38,23 +38,22 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
 
         setContentView(bind.root)
 
-        Log.d("TAG1------>", "k")
+        coinAdapter = coinAdapter(this, tempCoinList)
+
+     //   LayoutManager = GridLayoutManager(this, 2)
         callAPI()
 
-        LayoutManager = GridLayoutManager(this, 2)
 
-        setUpTheRecyclerView()
+           LayoutManager = GridLayoutManager(this, 2)
+          setUpTheRecyclerView()
 
-        Log.d("TAG4------>", "k")
+
 
 
         bind.btSort.setOnClickListener {
             tempCoinList.sortedWith() { o1, o2 -> o1.name.compareTo(o2.name) }
             coinAdapter.setData(tempCoinList as ArrayList<Coin>)
-
         }
-
-
 
         bind.recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -75,9 +74,6 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         CoroutineScope(Dispatchers.IO).launch {
 
             coinLiistVM._coinListValue.collectLatest { coinListValue ->
-
-                Log.d("TAGCoinList-------->", "Eo")
-
                 withContext(Dispatchers.Main) {
                     if (coinListValue.isLoading) {
                         bind.progressBar.visibility = View.VISIBLE
@@ -92,6 +88,8 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
                                 .show()
 
                         } else {
+                            Log.d("TAGCoinList-------->", "Eo")
+
 
                             bind.progressBar.visibility = View.GONE
                             tempCoinList.addAll(coinListValue.coinsList)
@@ -102,15 +100,24 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
 
             }
         }
+
+
     }
+
 
     private fun setUpTheRecyclerView() {
 
-        coinAdapter = coinAdapter(this, ArrayList())
+
+
+        coinAdapter = coinAdapter(this, tempCoinList)
         bind.recycler.adapter = coinAdapter
+        Log.d("TAGinRecycle------>", "KOko")
         bind.recycler.layoutManager = LayoutManager
         bind.recycler.addItemDecoration(
-            DividerItemDecoration(bind.recycler.context, (GridLayoutManager(this, 1).orientation))
+            DividerItemDecoration(
+                bind.recycler.context,
+                (GridLayoutManager(this, 1).orientation)
+            )
         )
     }
 

@@ -13,7 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-@AndroidEntryPoint
+//@AndroidEntryPoint
 class CoinActivity : AppCompatActivity() {
     private lateinit var bind: ActivityCoinBinding
     private val coinViewModel: coinVM by viewModels()

@@ -11,7 +11,7 @@ import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
 
-class CoinDetailUseCase @Inject constructor(
+class CoinDetailUseCase /*@Inject constructor*/(
     private val repository: CoinRepo = getCoinRepo
 ) {
 
