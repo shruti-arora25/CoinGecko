@@ -24,9 +24,9 @@ object CoinGeckoModule {
             .create(CoinGecoApi::class.java)
 
     }
-
-    val getCoinListUseCase = CoinListUseCase()
     val getCoinRepo = CoinRepoImpl()
+
+    val getCoinListUseCase = CoinListUseCase(getCoinRepo)
 
 
     /* @Provides

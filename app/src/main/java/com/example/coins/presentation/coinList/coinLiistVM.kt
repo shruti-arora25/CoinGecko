@@ -13,7 +13,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /*@HiltViewModel*/
-class coinLiistVM /*@Inject constructor*/(
+
+/*@Inject constructor*/
+class coinLiistVM(
     private val coinsUseCase: CoinListUseCase = getCoinListUseCase
 ):ViewModel() {
 

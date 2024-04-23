@@ -18,7 +18,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-
+import kotlinx.coroutines.withContext
 /*@AndroidEntryPoint*/
 class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
 
@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
     private lateinit var LayoutManager: GridLayoutManager
     private var page: Int = 1
     private val tempCoinList = arrayListOf<Coin>()
-    private val coinListViewModel: coinLiistVM by viewModels()
+    private val coinLiistVM:coinLiistVM by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,9 +35,10 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         bind = ActivityMainBinding.inflate(layoutInflater)
 
         setContentView(bind.root)
+        LayoutManager = GridLayoutManager(this, 2)
 
         setUpTheRecyclerView()
-        LayoutManager = GridLayoutManager(this, 2)
+        //LayoutManager = GridLayoutManager(this, 2)
 
         bind.btSort.setOnClickListener {
             tempCoinList.sortWith { o1, o2 -> o1.name.compareTo(o2.name) }
@@ -50,7 +51,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (LayoutManager.findLastVisibleItemPosition() == LayoutManager.itemCount - 1) {
                     page++
-                    coinListViewModel.getAllCoins(page.toString())
+                    coinLiistVM.getAllCoins(page.toString())
 
                     callAPI()
                 }
@@ -61,25 +62,33 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
     private fun callAPI() {
 
         CoroutineScope(Dispatchers.IO).launch {
-            coinListViewModel._coinListValue.collectLatest { coinListValue ->
-                if (coinListValue.isLoading) {
-                    bind.progressBar.visibility = View.VISIBLE
-                } else {
-                    if (coinListValue.error.isNotBlank()) {
-                        bind.progressBar.visibility = View.GONE
-                        Toast.makeText(this@MainActivity, coinListValue.error, Toast.LENGTH_SHORT)
-                            .show()
+            coinLiistVM._coinListValue.collectLatest { coinListValue ->
+
+                withContext(Dispatchers.Main) {
+                    if (coinListValue.isLoading) {
+                        bind.progressBar.visibility = View.VISIBLE
                     } else {
-                        bind.progressBar.visibility = View.GONE
-                        tempCoinList.addAll(coinListValue.coinsList)
-                        coinAdapter.setData(tempCoinList)
+                        if (coinListValue.error.isNotBlank()) {
+                            bind.progressBar.visibility = View.GONE
+                            Toast.makeText(
+                                this@MainActivity,
+                                coinListValue.error,
+                                Toast.LENGTH_SHORT
+                            )
+                                .show()
+
+                        } else {
+
+                            bind.progressBar.visibility = View.GONE
+                            tempCoinList.addAll(coinListValue.coinsList)
+                            coinAdapter.setData(tempCoinList)
+                        }
                     }
                 }
-            }
 
+            }
         }
     }
-
 
     private fun setUpTheRecyclerView() {
 
